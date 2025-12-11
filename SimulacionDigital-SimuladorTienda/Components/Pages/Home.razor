@@ -1,0 +1,645 @@
+﻿@page "/"
+@using System.Timers
+@using SimulacionDigital_SimuladorTienda.Modelos
+@rendermode InteractiveServer
+
+<PageTitle>Simulador de Negocio</PageTitle>
+
+<div class="container-fluid py-4">
+    <h1 class="mb-4">Simulador de Negocio - Estado de Resultados</h1>
+
+    <!-- Controles de Simulación -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="d-flex align-items-center gap-3">
+                <button class="btn btn-success" @onclick="IniciarSimulacion" disabled="@simulacionActiva">
+                    ▶ Iniciar
+                </button>
+                <button class="btn btn-warning" @onclick="PausarSimulacion" disabled="@(!simulacionActiva)">
+                    ⏸ Pausar
+                </button>
+                <button class="btn btn-danger" @onclick="DetenerSimulacion" disabled="@(!simulacionActiva && diaActual == 0)">
+                    ⏹ Detener y Ver Estadísticas
+                </button>
+                <button class="btn btn-secondary" @onclick="ReiniciarSimulacion">
+                    🔄 Reiniciar
+                </button>
+                <span class="ms-auto badge bg-primary fs-5">Día: @diaActual</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabs de Configuración -->
+    <ul class="nav nav-tabs mb-3" role="tablist">
+        <li class="nav-item">
+            <button class="nav-link @(tabActiva == "empleados" ? "active" : "")" @onclick='() => tabActiva = "empleados"'>
+                Empleados
+            </button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link @(tabActiva == "financiamiento" ? "active" : "")" @onclick='() => tabActiva = "financiamiento"'>
+                Financiamiento
+            </button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link @(tabActiva == "gastosadm" ? "active" : "")" @onclick='() => tabActiva = "gastosadm"'>
+                Gastos ADM
+            </button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link @(tabActiva == "gastosmenores" ? "active" : "")" @onclick='() => tabActiva = "gastosmenores"'>
+                Gastos Menores
+            </button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link @(tabActiva == "productos" ? "active" : "")" @onclick='() => tabActiva = "productos"'>
+                Productos
+            </button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link @(tabActiva == "estadoresultado" ? "active" : "")" @onclick='() => tabActiva = "estadoresultado"'>
+                Estado de Resultado
+            </button>
+        </li>
+    </ul>
+
+    <!-- Contenido de Tabs -->
+    @if (tabActiva == "empleados")
+    {
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Empleados</h5>
+                <button class="btn btn-sm btn-primary" @onclick="AgregarEmpleado">+ Agregar</button>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Puesto</th>
+                            <th>Salario Mensual</th>
+                            <th>Salario Diario</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var emp in empleados)
+                        {
+                            <tr>
+                                <td><input type="text" class="form-control" @bind="emp.Nombre" /></td>
+                                <td><input type="text" class="form-control" @bind="emp.Puesto" /></td>
+                                <td><input type="number" class="form-control" @bind="emp.Salario" /></td>
+                                <td>@((emp.Salario / 30).ToString("C2"))</td>
+                                <td>
+                                    <button class="btn btn-sm btn-danger" @onclick="() => EliminarEmpleado(emp.Id)">🗑</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+    else if (tabActiva == "financiamiento")
+    {
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Gastos Financieros</h5>
+                <button class="btn btn-sm btn-primary" @onclick="AgregarFinanciamiento">+ Agregar</button>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Detalle</th>
+                            <th>Cuota Mensual</th>
+                            <th>Cuota Diaria</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var fin in financiamientos)
+                        {
+                            <tr>
+                                <td><input type="text" class="form-control" @bind="fin.Detalle" /></td>
+                                <td><input type="number" class="form-control" @bind="fin.CuotaMensual" /></td>
+                                <td>@((fin.CuotaMensual / 30).ToString("C2"))</td>
+                                <td>
+                                    <button class="btn btn-sm btn-danger" @onclick="() => EliminarFinanciamiento(fin.Id)">🗑</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+    else if (tabActiva == "gastosadm")
+    {
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Gastos Administrativos</h5>
+                <button class="btn btn-sm btn-primary" @onclick="AgregarGastoAdm">+ Agregar</button>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Descripción</th>
+                            <th>Valor Mensual</th>
+                            <th>Valor Diario</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var gasto in gastosAdm)
+                        {
+                            <tr>
+                                <td><input type="text" class="form-control" @bind="gasto.Descripcion" /></td>
+                                <td><input type="number" class="form-control" @bind="gasto.Valor" /></td>
+                                <td>@((gasto.Valor / 30).ToString("C2"))</td>
+                                <td>
+                                    <button class="btn btn-sm btn-danger" @onclick="() => EliminarGastoAdm(gasto.Id)">🗑</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+    else if (tabActiva == "gastosmenores")
+    {
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Gastos Menores</h5>
+                <button class="btn btn-sm btn-primary" @onclick="AgregarGastoMenor">+ Agregar</button>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Descripción</th>
+                            <th>Valor Mensual</th>
+                            <th>Valor Diario</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var gasto in gastosMenores)
+                        {
+                            <tr>
+                                <td><input type="text" class="form-control" @bind="gasto.Descripcion" /></td>
+                                <td><input type="number" class="form-control" @bind="gasto.Valor" /></td>
+                                <td>@((gasto.Valor / 30).ToString("C2"))</td>
+                                <td>
+                                    <button class="btn btn-sm btn-danger" @onclick="() => EliminarGastoMenor(gasto.Id)">🗑</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+    else if (tabActiva == "productos")
+    {
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Productos</h5>
+                <button class="btn btn-sm btn-primary" @onclick="AgregarProducto">+ Agregar</button>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label class="form-label">Tasa de Descuento (%)</label>
+                    <input type="number" class="form-control" style="max-width: 200px;" @bind="tasaDescuento" />
+                </div>
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Cantidad</th>
+                            <th>SubTotal</th>
+                            <th>Precio Compra Unit.</th>
+                            <th>Gastos Adic.</th>
+                            <th>Costo Unit.</th>
+                            <th>Margen %</th>
+                            <th>Precio Venta</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var prod in productos)
+                        {
+                            <tr>
+                                <td><input type="text" class="form-control form-control-sm" @bind="prod.Nombre" /></td>
+                                <td><input type="number" class="form-control form-control-sm" @bind="prod.Cantidad" /></td>
+                                <td><input type="number" class="form-control form-control-sm" @bind="prod.SubTotal" /></td>
+                                <td>@prod.PrecioUnitario.ToString("C2")</td>
+                                <td>@prod.GastosAdicionales.ToString("C2")</td>
+                                <td>@prod.CostoUnitario.ToString("C2")</td>
+                                <td><input type="number" class="form-control form-control-sm" @bind="prod.MargenBeneficio" /></td>
+                                <td>@prod.PrecioVenta.ToString("C2")</td>
+                                <td>
+                                    <button class="btn btn-sm btn-danger" @onclick="() => EliminarProducto(prod.Id)">🗑</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+    else if (tabActiva == "estadoresultado")
+    {
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Estado de Resultados - Día @diaActual</h5>
+            </div>
+            <div class="card-body">
+                @if (resultadosDiarios.Any())
+                {
+                    var ultimo = resultadosDiarios.Last();
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="fw-bold">INGRESOS</h6>
+                            <table class="table table-sm">
+                                <tr><td>Ventas Brutas:</td><td class="text-end">@ultimo.Ventas.ToString("C2")</td></tr>
+                                <tr><td>(-) Descuentos:</td><td class="text-end text-danger">(@ultimo.Descuentos.ToString("C2"))</td></tr>
+                                <tr class="fw-bold"><td>Ventas Netas:</td><td class="text-end">@ultimo.VentasNetas.ToString("C2")</td></tr>
+                                <tr><td>(-) Costo de Ventas:</td><td class="text-end text-danger">(@ultimo.CostoVentas.ToString("C2"))</td></tr>
+                                <tr class="fw-bold table-primary"><td>Ingresos Netos:</td><td class="text-end">@ultimo.IngresosNetos.ToString("C2")</td></tr>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="fw-bold">GASTOS Y RESULTADO</h6>
+                            <table class="table table-sm">
+                                <tr><td>Total Gastos:</td><td class="text-end text-danger">(@ultimo.TotalGastos.ToString("C2"))</td></tr>
+                                <tr class="fw-bold @(ultimo.IngresosBrutos > 0 ? "table-success" : "table-danger")">
+                                    <td>Ingresos Brutos:</td>
+                                    <td class="text-end">@ultimo.IngresosBrutos.ToString("C2")</td>
+                                </tr>
+                                <tr><td>Punto de Equilibrio:</td><td class="text-end">@ultimo.PuntoEquilibrio.ToString("C2")</td></tr>
+                                <tr><td>Margen de Beneficio:</td><td class="text-end">@ultimo.MargenBeneficio.ToString("N2")%</td></tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="mt-3">
+                        <h6>Historial (Últimos 10 días)</h6>
+                        <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
+                            <table class="table table-sm table-striped">
+                                <thead class="sticky-top bg-white">
+                                    <tr>
+                                        <th>Día</th>
+                                        <th>Ventas</th>
+                                        <th>Descuentos</th>
+                                        <th>Costo Ventas</th>
+                                        <th>Ingresos Netos</th>
+                                        <th>Gastos</th>
+                                        <th>Ingresos Brutos</th>
+                                        <th>Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var res in resultadosDiarios.TakeLast(10).Reverse())
+                                    {
+                                        <tr class="@(res.ConBeneficios ? "table-success" : "table-danger")">
+                                            <td>@res.Dia</td>
+                                            <td>@res.Ventas.ToString("C2")</td>
+                                            <td>@res.Descuentos.ToString("C2")</td>
+                                            <td>@res.CostoVentas.ToString("C2")</td>
+                                            <td>@res.IngresosNetos.ToString("C2")</td>
+                                            <td>@res.TotalGastos.ToString("C2")</td>
+                                            <td>@res.IngresosBrutos.ToString("C2")</td>
+                                            <td>@(res.ConBeneficios ? "✓ Beneficio" : "✗ Pérdida")</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <p class="text-muted">Inicie la simulación para ver los resultados...</p>
+                }
+            </div>
+        </div>
+    }
+
+    <!-- Estadísticas Finales -->
+    @if (mostrarEstadisticas && estadisticasFinales != null)
+    {
+        <div class="modal show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header bg-primary text-white">
+                        <h5 class="modal-title">📊 Estadísticas Finales de Simulación</h5>
+                        <button type="button" class="btn-close btn-close-white" @onclick="CerrarEstadisticas"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="card bg-success text-white">
+                                    <div class="card-body text-center">
+                                        <h3>@estadisticasFinales.DiasConBeneficios</h3>
+                                        <p class="mb-0">Días con Beneficios</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card bg-danger text-white">
+                                    <div class="card-body text-center">
+                                        <h3>@estadisticasFinales.DiasConPerdidas</h3>
+                                        <p class="mb-0">Días con Pérdidas</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card bg-info text-white">
+                                    <div class="card-body text-center">
+                                        <h4>@estadisticasFinales.PromedioPorcentajeBeneficios.ToString("N2")%</h4>
+                                        <p class="mb-0">Promedio % Beneficios</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card bg-warning text-dark">
+                                    <div class="card-body text-center">
+                                        <h4>@estadisticasFinales.PorcentajeFinalSugerido.ToString("N2")%</h4>
+                                        <p class="mb-0">% Final Sugerido</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card bg-secondary text-white">
+                                    <div class="card-body text-center">
+                                        <h4>@estadisticasFinales.PuntoEquilibrioPromedio.ToString("C2")</h4>
+                                        <p class="mb-0">Punto Equilibrio Promedio</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" @onclick="CerrarEstadisticas">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    private bool simulacionActiva = false;
+    private int diaActual = 0;
+    private string tabActiva = "empleados";
+    private Timer? timer;
+    private float tasaDescuento = 5;
+    private bool mostrarEstadisticas = false;
+
+    private List<Empleado> empleados = new();
+    private List<Financiamiento> financiamientos = new();
+    private List<GastoAdministrativo> gastosAdm = new();
+    private List<GastoMenor> gastosMenores = new();
+    private List<Producto> productos = new();
+    private List<ResultadoDiario> resultadosDiarios = new();
+    private EstadisticasFinales? estadisticasFinales = null;
+
+    protected override void OnInitialized()
+    {
+        InicializarDatos();
+    }
+
+    private void InicializarDatos()
+    {
+        empleados = new List<Empleado>
+        {
+            new Empleado { Id = 1, Nombre = "Juan Pérez", Puesto = "Vendedor", Salario = 10500 },
+            new Empleado { Id = 2, Nombre = "María López", Puesto = "Limpieza", Salario = 8500 },
+            new Empleado { Id = 1, Nombre = "Juana Pérez", Puesto = "Vendedora", Salario = 10500 },
+            new Empleado { Id = 2, Nombre = "Juan Duarte", Puesto = "Cajero", Salario = 8500 },
+            new Empleado { Id = 1, Nombre = "Pedro Perez", Puesto = "Contador", Salario = 3500 },
+            new Empleado { Id = 2, Nombre = "Limpieza", Puesto = "Vendedor", Salario = 7000 }
+        };
+
+        financiamientos = new List<Financiamiento>
+        {
+            new Financiamiento { Id = 1, Detalle = "Préstamo Bancario", CuotaMensual = 5000 }
+        };
+
+        gastosAdm = new List<GastoAdministrativo>
+        {
+            new GastoAdministrativo { Id = 1, Descripcion = "Renta", Valor = 20000 },
+            new GastoAdministrativo { Id = 2, Descripcion = "Energia Electrica", Valor = 5500 },
+             new GastoAdministrativo { Id = 1, Descripcion = "Internet", Valor = 2200 },
+            new GastoAdministrativo { Id = 2, Descripcion = "Publicidad Digital", Valor = 5000 }
+        };
+
+        gastosMenores = new List<GastoMenor>
+        {
+            new GastoMenor { Id = 1, Descripcion = "Limpieza", Valor = 2500 },
+            new GastoMenor { Id = 2, Descripcion = "Dietas", Valor = 1500 },
+            new GastoMenor { Id = 1, Descripcion = "Publicidad", Valor = 10000 },
+            new GastoMenor { Id = 2, Descripcion = "Telefonia", Valor = 3000 },
+            new GastoMenor { Id = 2, Descripcion = "Motoconcho", Valor = 3000 }
+        };
+
+        productos = new List<Producto>
+        {
+            new Producto { Id = 1, Nombre = "Sueters ADIDAS", Cantidad = 50, SubTotal = 2750, MargenBeneficio = 40 },
+            new Producto { Id = 2, Nombre = "Boxers CK", Cantidad = 30, SubTotal = 300, MargenBeneficio = 45 },
+            new Producto { Id = 3, Nombre = "Jeans Express", Cantidad = 100, SubTotal = 7500, MargenBeneficio = 35 },
+            new Producto { Id = 1, Nombre = "Shorts Banana Republic", Cantidad = 50, SubTotal = 3000, MargenBeneficio = 40 },
+            new Producto { Id = 2, Nombre = "Camisas Perry Ellis", Cantidad = 10, SubTotal = 500, MargenBeneficio = 45 },
+            new Producto { Id = 3, Nombre = "Perfumes 30 Cl Gucci", Cantidad = 10, SubTotal = 1000, MargenBeneficio = 35 },
+            new Producto { Id = 1, Nombre = "Permumes 25 Cl Dolce & Gabanna", Cantidad = 5, SubTotal = 425, MargenBeneficio = 40 },
+            new Producto { Id = 2, Nombre = "Perfumes Cocco Chanel 30 Cl", Cantidad = 5, SubTotal = 450, MargenBeneficio = 45 },
+            new Producto { Id = 3, Nombre = "Camisas PH", Cantidad = 10, SubTotal = 400, MargenBeneficio = 35 },
+            new Producto { Id = 1, Nombre = "Licras Victoria Secret", Cantidad = 50, SubTotal = 2500, MargenBeneficio = 40 },
+
+        
+        };
+    }
+
+    private void IniciarSimulacion()
+    {
+        simulacionActiva = true;
+        timer = new Timer(2000);
+        timer.Elapsed += (sender, e) => SimularDia();
+        timer.Start();
+    }
+
+    private void PausarSimulacion()
+    {
+        simulacionActiva = false;
+        timer?.Stop();
+    }
+
+    private void DetenerSimulacion()
+    {
+        simulacionActiva = false;
+        timer?.Stop();
+        CalcularEstadisticas();
+        mostrarEstadisticas = true;
+        StateHasChanged();
+    }
+
+    private void ReiniciarSimulacion()
+    {
+        simulacionActiva = false;
+        timer?.Stop();
+        diaActual = 0;
+        resultadosDiarios.Clear();
+        mostrarEstadisticas = false;
+        estadisticasFinales = null;
+    }
+
+    private void SimularDia()
+    {
+        InvokeAsync(() =>
+        {
+            diaActual++;
+
+            float totalEmpleados = empleados.Sum(e => e.Salario / 30);
+            float totalFinanciamiento = financiamientos.Sum(f => f.CuotaMensual / 30);
+            float totalGastosAdm = gastosAdm.Sum(g => g.Valor / 30);
+            float totalGastosMenores = gastosMenores.Sum(g => g.Valor / 30);
+            float totalGastos = totalEmpleados + totalFinanciamiento + totalGastosAdm + totalGastosMenores;
+
+            Random random = new Random();
+            float ventasBrutas = 0;
+            float costoVentas = 0;
+
+            foreach (var producto in productos)
+            {
+                if (producto.Cantidad > 0)
+                {
+                    int ventasAleatorias = random.Next(0, Math.Min(producto.Cantidad, 30));
+                    ventasBrutas += ventasAleatorias * producto.PrecioVenta;
+                    costoVentas += ventasAleatorias * producto.CostoUnitario;
+                }
+            }
+
+            float descuentos = ventasBrutas * (tasaDescuento / 100);
+            float ventasNetas = ventasBrutas - descuentos;
+            float ingresosNetos = ventasNetas - costoVentas;
+            float ingresosBrutos = ingresosNetos - totalGastos;
+
+            float puntoEquilibrio = ventasBrutas > 0 ? totalGastos / (1 - (costoVentas / ventasBrutas)) : 0;
+            float margenBeneficio = ventasBrutas > 0 ? (ingresosBrutos / ventasBrutas) * 100 : 0;
+
+            resultadosDiarios.Add(new ResultadoDiario
+            {
+                Dia = diaActual,
+                Ventas = ventasBrutas,
+                Descuentos = descuentos,
+                VentasNetas = ventasNetas,
+                CostoVentas = costoVentas,
+                IngresosNetos = ingresosNetos,
+                TotalGastos = totalGastos,
+                IngresosBrutos = ingresosBrutos,
+                PuntoEquilibrio = puntoEquilibrio,
+                MargenBeneficio = margenBeneficio
+            });
+
+            StateHasChanged();
+        });
+    }
+
+    private void CalcularEstadisticas()
+    {
+        if (!resultadosDiarios.Any()) return;
+
+        int diasBeneficios = resultadosDiarios.Count(r => r.ConBeneficios);
+        int diasPerdidas = resultadosDiarios.Count - diasBeneficios;
+        float promedioBeneficios = resultadosDiarios.Average(r => r.MargenBeneficio);
+        float sugerido = promedioBeneficios < 15 ? promedioBeneficios + 10 : promedioBeneficios + 5;
+        float promedioEquilibrio = resultadosDiarios.Average(r => r.PuntoEquilibrio);
+
+        estadisticasFinales = new EstadisticasFinales
+        {
+            DiasConBeneficios = diasBeneficios,
+            DiasConPerdidas = diasPerdidas,
+            PromedioPorcentajeBeneficios = promedioBeneficios,
+            PorcentajeFinalSugerido = sugerido,
+            PuntoEquilibrioPromedio = promedioEquilibrio
+        };
+    }
+
+    private void CerrarEstadisticas() => mostrarEstadisticas = false;
+
+    // ============ CRUD EMPLEADOS ============
+    private void AgregarEmpleado()
+    {
+        var nuevoId = empleados.Any() ? empleados.Max(e => e.Id) + 1 : 1;
+        empleados.Add(new Empleado { Id = nuevoId, Nombre = "", Puesto = "", Salario = 0 });
+    }
+
+    private void EliminarEmpleado(int id)
+    {
+        empleados.RemoveAll(e => e.Id == id);
+    }
+
+    // ============ CRUD FINANCIAMIENTO ============
+    private void AgregarFinanciamiento()
+    {
+        var nuevoId = financiamientos.Any() ? financiamientos.Max(f => f.Id) + 1 : 1;
+        financiamientos.Add(new Financiamiento { Id = nuevoId, Detalle = "", CuotaMensual = 0 });
+    }
+
+    private void EliminarFinanciamiento(int id)
+    {
+        financiamientos.RemoveAll(f => f.Id == id);
+    }
+
+    // ============ CRUD GASTOS ADMINISTRATIVOS ============
+    private void AgregarGastoAdm()
+    {
+        var nuevoId = gastosAdm.Any() ? gastosAdm.Max(g => g.Id) + 1 : 1;
+        gastosAdm.Add(new GastoAdministrativo { Id = nuevoId, Descripcion = "", Valor = 0 });
+    }
+
+    private void EliminarGastoAdm(int id)
+    {
+        gastosAdm.RemoveAll(g => g.Id == id);
+    }
+
+    // ============ CRUD GASTOS MENORES ============
+    private void AgregarGastoMenor()
+    {
+        var nuevoId = gastosMenores.Any() ? gastosMenores.Max(g => g.Id) + 1 : 1;
+        gastosMenores.Add(new GastoMenor { Id = nuevoId, Descripcion = "", Valor = 0 });
+    }
+
+    private void EliminarGastoMenor(int id)
+    {
+        gastosMenores.RemoveAll(g => g.Id == id);
+    }
+
+    // ============ CRUD PRODUCTOS ============
+    private void AgregarProducto()
+    {
+        var nuevoId = productos.Any() ? productos.Max(p => p.Id) + 1 : 1;
+        productos.Add(new Producto
+        {
+            Id = nuevoId,
+            Nombre = "",
+            Cantidad = 0,
+            SubTotal = 0,
+            MargenBeneficio = 0
+        });
+    }
+
+    private void EliminarProducto(int id)
+    {
+        productos.RemoveAll(p => p.Id == id);
+    }
+
+    public void Dispose()
+    {
+        timer?.Stop();
+        timer?.Dispose();
+    }
+}
