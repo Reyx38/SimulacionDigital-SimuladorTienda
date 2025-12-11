@@ -6,5 +6,4 @@ public class EstadisticasFinales
     public int DiasConBeneficios { get; set; }
     public float PromedioPorcentajeBeneficios { get; set; }
     public float PorcentajeFinalSugerido { get; set; }
-    public float PuntoEquilibrioPromedio { get; set; }
 }

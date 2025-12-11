@@ -14,7 +14,6 @@ public class ResultadoDiario
     public float FinanciamientoTotal { get; set; }
     public float TotalGastos { get; set; }
     public float IngresosBrutos { get; set; }
-    public float PuntoEquilibrio { get; set; }
     public float MargenBeneficio { get; set; }
     public bool ConBeneficios => IngresosBrutos > 0;
 }
