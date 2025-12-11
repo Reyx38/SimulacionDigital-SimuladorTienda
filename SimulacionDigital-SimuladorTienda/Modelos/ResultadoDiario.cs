@@ -8,6 +8,10 @@ public class ResultadoDiario
     public float VentasNetas { get; set; }
     public float CostoVentas { get; set; }
     public float IngresosNetos { get; set; }
+    public float EmpleadoTotal { get; set; }
+    public float GastoADMTotal { get; set; }
+    public float GastosMenoresTotal { get; set; }
+    public float FinanciamientoTotal { get; set; }
     public float TotalGastos { get; set; }
     public float IngresosBrutos { get; set; }
     public float PuntoEquilibrio { get; set; }

@@ -1,10 +1,20 @@
 using SimulacionDigital_SimuladorTienda.Components;
+using SimulacionDigital_SimuladorTienda.Servicios;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+builder.Services.AddScoped<ProductoServices>();
+builder.Services.AddScoped<GastosMenorServices>();
+builder.Services.AddScoped<EmpleadoServices>();
+builder.Services.AddScoped<GastoAdministrativoServices>();
+builder.Services.AddScoped<FinanciamientoServices>();
+
+
+
 
 var app = builder.Build();
 
