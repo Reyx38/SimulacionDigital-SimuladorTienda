@@ -75,478 +75,654 @@
 
 @if (tabActiva == "empleados")
 {
-        <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">Empleados</h5>
-                <button class="btn btn-sm btn-primary" @onclick="AgregarEmpleado">+ Agregar</button>
-            </div>
-            <div class="card-body">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Puesto</th>
-                            <th>Salario Mensual</th>
-                            <th>Salario Diario</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var emp in empleados)
-                        {
-                            <tr>
-                                <td><input type="text" class="form-control" @bind="emp.Nombre" /></td>
-                                <td><input type="text" class="form-control" @bind="emp.Puesto" /></td>
-                                <td><input type="number" class="form-control" step="0.01" @bind="emp.Salario" /></td>
-                                <td>@((emp.Salario / 30f).ToString("C2"))</td>
-                                <td>
-                                    <button class="btn btn-sm btn-danger" @onclick="() => EliminarEmpleado(emp.Id)">🗑</button>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Empleados</h5>
+            <button class="btn btn-sm btn-primary" @onclick="AgregarEmpleado">+ Agregar</button>
         </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Puesto</th>
+                        <th>Salario Mensual</th>
+                        <th>Salario Diario</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var emp in empleados)
+                    {
+                        <tr>
+                            <td><input type="text" class="form-control" @bind="emp.Nombre" /></td>
+                            <td><input type="text" class="form-control" @bind="emp.Puesto" /></td>
+                            <td><input type="number" class="form-control" step="0.01" @bind="emp.Salario" /></td>
+                            <td>@((emp.Salario / 30f).ToString("C2"))</td>
+                            <td>
+                                <button class="btn btn-sm btn-danger" @onclick="() => EliminarEmpleado(emp.Id)">🗑</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 }
 else if (tabActiva == "financiamiento")
 {
-        <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">Gastos Financieros</h5>
-                <button class="btn btn-sm btn-primary" @onclick="AgregarFinanciamiento">+ Agregar</button>
-            </div>
-            <div class="card-body">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Detalle</th>
-                            <th>Cuota Mensual</th>
-                            <th>Cuota Diaria</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var fin in financiamientos)
-                        {
-                            <tr>
-                                <td><input type="text" class="form-control" @bind="fin.Detalle" /></td>
-                                <td><input type="number" class="form-control" step="0.01" @bind="fin.CuotaMensual" /></td>
-                                <td>@((fin.CuotaMensual / 30f).ToString("C2"))</td>
-                                <td>
-                                    <button class="btn btn-sm btn-danger" @onclick="() => EliminarFinanciamiento(fin.Id)">🗑</button>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Gastos Financieros</h5>
+            <button class="btn btn-sm btn-primary" @onclick="AgregarFinanciamiento">+ Agregar</button>
         </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Detalle</th>
+                        <th>Cuota Mensual</th>
+                        <th>Cuota Diaria</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var fin in financiamientos)
+                    {
+                        <tr>
+                            <td><input type="text" class="form-control" @bind="fin.Detalle" /></td>
+                            <td><input type="number" class="form-control" step="0.01" @bind="fin.CuotaMensual" /></td>
+                            <td>@((fin.CuotaMensual / 30f).ToString("C2"))</td>
+                            <td>
+                                <button class="btn btn-sm btn-danger" @onclick="() => EliminarFinanciamiento(fin.Id)">🗑</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 }
 else if (tabActiva == "gastosadm")
 {
-        <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">Gastos Administrativos</h5>
-                <button class="btn btn-sm btn-primary" @onclick="AgregarGastoAdm">+ Agregar</button>
-            </div>
-            <div class="card-body">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Descripción</th>
-                            <th>Valor Mensual</th>
-                            <th>Valor Diario</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var gasto in gastosAdm)
-                        {
-                            <tr>
-                                <td><input type="text" class="form-control" @bind="gasto.Descripcion" /></td>
-                                <td><input type="number" class="form-control" step="0.01" @bind="gasto.Valor" /></td>
-                                <td>@((gasto.Valor / 30f).ToString("C2"))</td>
-                                <td>
-                                    <button class="btn btn-sm btn-danger" @onclick="() => EliminarGastoAdm(gasto.Id)">🗑</button>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Gastos Administrativos</h5>
+            <button class="btn btn-sm btn-primary" @onclick="AgregarGastoAdm">+ Agregar</button>
         </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Descripción</th>
+                        <th>Valor Mensual</th>
+                        <th>Valor Diario</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var gasto in gastosAdm)
+                    {
+                        <tr>
+                            <td><input type="text" class="form-control" @bind="gasto.Descripcion" /></td>
+                            <td><input type="number" class="form-control" step="0.01" @bind="gasto.Valor" /></td>
+                            <td>@((gasto.Valor / 30f).ToString("C2"))</td>
+                            <td>
+                                <button class="btn btn-sm btn-danger" @onclick="() => EliminarGastoAdm(gasto.Id)">🗑</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 }
 else if (tabActiva == "gastosmenores")
 {
-        <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">Gastos Menores</h5>
-                <button class="btn btn-sm btn-primary" @onclick="AgregarGastoMenor">+ Agregar</button>
-            </div>
-            <div class="card-body">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Descripción</th>
-                            <th>Valor Mensual</th>
-                            <th>Valor Diario</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var gasto in gastosMenores)
-                        {
-                            <tr>
-                                <td><input type="text" class="form-control" @bind="gasto.Descripcion" /></td>
-                                <td><input type="number" class="form-control" step="0.01" @bind="gasto.Valor" /></td>
-                                <td>@((gasto.Valor / 30f).ToString("C2"))</td>
-                                <td>
-                                    <button class="btn btn-sm btn-danger" @onclick="() => EliminarGastoMenor(gasto.Id)">🗑</button>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Gastos Menores</h5>
+            <button class="btn btn-sm btn-primary" @onclick="AgregarGastoMenor">+ Agregar</button>
         </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Descripción</th>
+                        <th>Valor Mensual</th>
+                        <th>Valor Diario</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var gasto in gastosMenores)
+                    {
+                        <tr>
+                            <td><input type="text" class="form-control" @bind="gasto.Descripcion" /></td>
+                            <td><input type="number" class="form-control" step="0.01" @bind="gasto.Valor" /></td>
+                            <td>@((gasto.Valor / 30f).ToString("C2"))</td>
+                            <td>
+                                <button class="btn btn-sm btn-danger" @onclick="() => EliminarGastoMenor(gasto.Id)">🗑</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 }
 else if (tabActiva == "productos")
 {
-        <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">Productos</h5>
-                <button class="btn btn-sm btn-primary" @onclick="AgregarProducto">+ Agregar</button>
-            </div>
-            <div class="card-body">
-                <div class="mb-3">
-                    <label class="form-label">Tasa de Descuento (%)</label>
-                    <input type="number" class="form-control" style="max-width: 200px;" step="0.01" @bind="tasaDescuento" />
-                </div>
-                <table class="table table-sm">
-                    <thead>
-                        <tr>
-                            <th>Producto</th>
-                            <th>Cantidad</th>
-                            <th>SubTotal</th>
-                            <th>Precio Compra Unit.</th>
-                            <th>Gastos Adic.</th>
-                            <th>Costo Unit.</th>
-                            <th>Margen %</th>
-                            <th>Precio Venta</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var prod in productos)
-                        {
-                            <tr>
-                                <td><input type="text" class="form-control form-control-sm" @bind="prod.Nombre" /></td>
-                                <td><input type="number" class="form-control form-control-sm" step="1" @bind="prod.Cantidad" /></td>
-                                <td><input type="number" class="form-control form-control-sm" step="0.01" @bind="prod.SubTotal" /></td>
-                                <td>@prod.PrecioUnitario.ToString("C2")</td>
-                                <td>@prod.GastosAdicionales.ToString("C2")</td>
-                                <td>@prod.CostoUnitario.ToString("C2")</td>
-                                <td><input type="number" class="form-control form-control-sm" step="0.01" @bind="prod.MargenBeneficio" /></td>
-                                <td>@prod.PrecioVenta.ToString("C2")</td>
-                                <td>
-                                    <button class="btn btn-sm btn-danger" @onclick="() => EliminarProducto(prod.Id)">🗑</button>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Productos</h5>
+            <button class="btn btn-sm btn-primary" @onclick="AgregarProducto">+ Agregar</button>
         </div>
+        <div class="card-body">
+            <div class="mb-3">
+                <label class="form-label">Tasa de Descuento (%)</label>
+                <input type="number" class="form-control" style="max-width: 200px;" step="0.01" @bind="tasaDescuento" />
+            </div>
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>SubTotal</th>
+                        <th>Precio Compra Unit.</th>
+                        <th>Gastos Adic.</th>
+                        <th>Costo Unit.</th>
+                        <th>Margen %</th>
+                        <th>Precio Venta</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var prod in productos)
+                    {
+                        <tr>
+                            <td><input type="text" class="form-control form-control-sm" @bind="prod.Nombre" /></td>
+                            <td><input type="number" class="form-control form-control-sm" step="1" @bind="prod.Cantidad" /></td>
+                            <td><input type="number" class="form-control form-control-sm" step="0.01" @bind="prod.SubTotal" /></td>
+                            <td>@prod.PrecioUnitario.ToString("C2")</td>
+                            <td>@prod.GastosAdicionales.ToString("C2")</td>
+                            <td>@prod.CostoUnitario.ToString("C2")</td>
+                            <td><input type="number" class="form-control form-control-sm" step="0.01" @bind="prod.MargenBeneficio" /></td>
+                            <td>@prod.PrecioVenta.ToString("C2")</td>
+                            <td>
+                                <button class="btn btn-sm btn-danger" @onclick="() => EliminarProducto(prod.Id)">🗑</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 }
 else if (tabActiva == "dashboard")
 {
-        <div class="card">
-            <div class="card-header">
-                <h5 class="mb-0">📊 Dashboard de Seguimiento</h5>
-            </div>
-            <div class="card-body">
-                @if (resultadosDiarios.Any())
-                {
-                    var totales = CalcularTotales();
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0">📊 Dashboard de Seguimiento</h5>
+        </div>
+        <div class="card-body">
+            @if (resultadosDiarios.Any())
+            {
+                var totales = CalcularTotales();
 
-                    <div class="row g-3 mb-4">
-                        <div class="col-md-4">
-                            <div class="card @(totales.BeneficioNeto >= 0 ? "border-success" : "border-danger")">
-                                <div class="card-body text-center">
-                                    <h6 class="text-muted mb-2">Beneficio Ganado Neto</h6>
-                                    <h2 class="@(totales.BeneficioNeto >= 0 ? "text-success" : "text-danger")">
-                                        @totales.BeneficioNeto.ToString("C2")
-                                    </h2>
-                                    <small class="text-muted">Acumulado @diaActual días</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card border-warning">
-                                <div class="card-body text-center">
-                                    <h6 class="text-muted mb-2">Gasto Total</h6>
-                                    <h2 class="text-warning">
-                                        @totales.GastoTotal.ToString("C2")
-                                    </h2>
-                                    <small class="text-muted">Acumulado @diaActual días</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card border-info">
-                                <div class="card-body text-center">
-                                    <h6 class="text-muted mb-2">Gastos / Beneficios Brutos</h6>
-                                    <h2 class="text-info">
-                                        @totales.PorcentajeGastos.ToString("N2")%
-                                    </h2>
-                                    <small class="text-muted">Ratio de eficiencia</small>
-                                </div>
+                <div class="row g-3 mb-4">
+                    <div class="col-md-4">
+                        <div class="card @(totales.BeneficioNeto >= 0 ? "border-success" : "border-danger")">
+                            <div class="card-body text-center">
+                                <h6 class="text-muted mb-2">Beneficio Ganado Neto</h6>
+                                <h2 class="@(totales.BeneficioNeto >= 0 ? "text-success" : "text-danger")">
+                                    @totales.BeneficioNeto.ToString("C2")
+                                </h2>
+                                <small class="text-muted">Acumulado @diaActual días</small>
                             </div>
                         </div>
                     </div>
-
-                    <div class="card">
-                        <div class="card-header">
-                            <h6 class="mb-0">Evolución del Beneficio Ganado Neto</h6>
+                    <div class="col-md-4">
+                        <div class="card border-warning">
+                            <div class="card-body text-center">
+                                <h6 class="text-muted mb-2">Gasto Total</h6>
+                                <h2 class="text-warning">
+                                    @totales.GastoTotal.ToString("C2")
+                                </h2>
+                                <small class="text-muted">Acumulado @diaActual días</small>
+                            </div>
                         </div>
-                        <div class="card-body">
-                            <div style="position: relative; height: 400px;">
-                                <svg width="100%" height="100%" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid meet">
-                                    <rect x="60" y="20" width="720" height="340" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1" />
+                    </div>
+                </div>
 
-                                    @if (resultadosDiarios.Any())
+                <div class="card">
+                    <div class="card-header">
+                        <h6 class="mb-0">Evolución del Beneficio Ganado Neto</h6>
+                    </div>
+                    <div class="card-body">
+                        <div style="position: relative; height: 400px;">
+                            <svg width="100%" height="100%" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid meet">
+                                <rect x="60" y="20" width="720" height="340" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1" />
+
+                                @if (resultadosDiarios.Any())
+                                {
+                                    var maxBeneficio = resultadosDiarios.Max(r => r.IngresosNeto);
+                                    var minBeneficio = resultadosDiarios.Min(r => r.IngresosNeto);
+                                    var rango = maxBeneficio - minBeneficio;
+                                    if (rango == 0) rango = 1;
+
+                                    for (int i = 0; i <= 5; i++)
                                     {
-                                        var maxBeneficio = resultadosDiarios.Max(r => r.IngresosBrutos);
-                                        var minBeneficio = resultadosDiarios.Min(r => r.IngresosBrutos);
-                                        var rango = maxBeneficio - minBeneficio;
-                                        if (rango == 0) rango = 1;
+                                        var y = 20 + (i * 68);
+                                        var valor = maxBeneficio - (rango * i / 5);
+                                        <line x1="60" y1="@y" x2="780" y2="@y" stroke="#dee2e6" stroke-width="1" stroke-dasharray="5,5" />
+                                        <svg width="500" height="300">
+                                            <text x="45"
+                                                  y="@(y + 5)"
+                                                  text-anchor="end"
+                                                  font-size="12"
+                                                  fill="#666">
+                                            </text>
+                                        </svg>
+                                    }
 
-                                        for (int i = 0; i <= 5; i++)
+                                    var anchoPunto = 720f / Math.Max(resultadosDiarios.Count - 1, 1);
+                                    var puntos = new List<string>();
+                                    for (int i = 0; i < resultadosDiarios.Count; i++)
+                                    {
+                                        var x = 60 + (i * anchoPunto);
+                                        var beneficio = resultadosDiarios[i].IngresosNeto;
+                                        var y = 20 + ((maxBeneficio - beneficio) / rango * 340);
+                                        puntos.Add($"{x},{y}");
+                                    }
+                                    var pathData = "M " + string.Join(" L ", puntos);
+                                    <path d="@pathData" fill="none" stroke="#0d6efd" stroke-width="3" />
+                                    @for (int i = 0; i < resultadosDiarios.Count; i++)
+                                    {
+                                        var x = 60 + (i * anchoPunto);
+                                        var beneficio = resultadosDiarios[i].IngresosNeto;
+                                        var y = 20 + ((maxBeneficio - beneficio) / rango * 340);
+                                        var color = beneficio >= 0 ? "#198754" : "#dc3545";
+                                        <circle cx="@x" cy="@y" r="4" fill="@color" stroke="white" stroke-width="2" />
+                                        @if (i % 5 == 0 || resultadosDiarios.Count <= 10)
                                         {
-                                            var y = 20 + (i * 68);
-                                            var valor = maxBeneficio - (rango * i / 5);
-                                            <line x1="60" y1="@y" x2="780" y2="@y" stroke="#dee2e6" stroke-width="1" stroke-dasharray="5,5" />
-                                            <svg width="500" height="300">
-                                                <text x="45"
-                                                      y="@(y + 5)"
-                                                      text-anchor="end"
-                                                      font-size="12"
+                                            <svg width="600" height="400">
+                                                <text x="@x"
+                                                      y="375"
+                                                      text-anchor="middle"
+                                                      font-size="11"
                                                       fill="#666">
                                                 </text>
                                             </svg>
                                         }
-
-                                        var anchoPunto = 720f / Math.Max(resultadosDiarios.Count - 1, 1);
-                                        var puntos = new List<string>();
-                                        for (int i = 0; i < resultadosDiarios.Count; i++)
-                                        {
-                                            var x = 60 + (i * anchoPunto);
-                                            var beneficio = resultadosDiarios[i].IngresosBrutos;
-                                            var y = 20 + ((maxBeneficio - beneficio) / rango * 340);
-                                            puntos.Add($"{x},{y}");
-                                        }
-                                        var pathData = "M " + string.Join(" L ", puntos);
-                                        <path d="@pathData" fill="none" stroke="#0d6efd" stroke-width="3" />
-                                        @for (int i = 0; i < resultadosDiarios.Count; i++)
-                                        {
-                                            var x = 60 + (i * anchoPunto);
-                                            var beneficio = resultadosDiarios[i].IngresosBrutos;
-                                            var y = 20 + ((maxBeneficio - beneficio) / rango * 340);
-                                            var color = beneficio >= 0 ? "#198754" : "#dc3545";
-                                            <circle cx="@x" cy="@y" r="4" fill="@color" stroke="white" stroke-width="2" />
-                                            @if (i % 5 == 0 || resultadosDiarios.Count <= 10)
-                                            {
-                                                <svg width="600" height="400">
-                                                    <text x="@x"
-                                                          y="375"
-                                                          text-anchor="middle"
-                                                          font-size="11"
-                                                          fill="#666">
-                                                    </text>
-                                                </svg>
-                                            }
-                                        }
                                     }
+                                }
 
-                                    <text x="400" y="395" text-anchor="middle" font-size="14" fill="#333" font-weight="bold">Días de Simulación</text>
-                                    <text x="20" y="200" text-anchor="middle" font-size="14" fill="#333" font-weight="bold" transform="rotate(-90, 20, 200)">Beneficio Neto ($)</text>
-                                </svg>
+                                <text x="400" y="395" text-anchor="middle" font-size="14" fill="#333" font-weight="bold">Días de Simulación</text>
+                                <text x="20" y="200" text-anchor="middle" font-size="14" fill="#333" font-weight="bold" transform="rotate(-90, 20, 200)">Beneficio Neto ($)</text>
+                            </svg>
+                        </div>
+
+                        <div class="mt-3 d-flex justify-content-center gap-4">
+                            <div>
+                                <span class="badge bg-success">●</span>
+                                <small class="ms-1">Beneficio Positivo</small>
                             </div>
-
-                            <div class="mt-3 d-flex justify-content-center gap-4">
-                                <div>
-                                    <span class="badge bg-success">●</span>
-                                    <small class="ms-1">Beneficio Positivo</small>
-                                </div>
-                                <div>
-                                    <span class="badge bg-danger">●</span>
-                                    <small class="ms-1">Pérdida</small>
-                                </div>
+                            <div>
+                                <span class="badge bg-danger">●</span>
+                                <small class="ms-1">Pérdida</small>
                             </div>
                         </div>
                     </div>
-                }
-                else
-                {
-                    <div class="text-center py-5">
-                        <i class="bi bi-graph-up" style="font-size: 4rem; color: #ccc;"></i>
-                        <p class="text-muted mt-3">Inicie la simulación para ver el dashboard de seguimiento...</p>
-                    </div>
-                }
-            </div>
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-5">
+                    <i class="bi bi-graph-up" style="font-size: 4rem; color: #ccc;"></i>
+                    <p class="text-muted mt-3">Inicie la simulación para ver el dashboard de seguimiento...</p>
+                </div>
+            }
         </div>
+    </div>
 }
 else if (tabActiva == "estadoresultado")
 {
-        <div class="card">
-            <div class="card-header">
-                <h5 class="mb-0">Estado de Resultados - Día @diaActual</h5>
-            </div>
-            <div class="card-body">
-                @if (resultadosDiarios.Any())
-                {
-                    var ultimo = resultadosDiarios.Last();
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h6 class="fw-bold">INGRESOS</h6>
-                            <table class="table table-sm">
-                                <tr><td>Ventas Brutas diarias:</td><td class="text-end">@ultimo.Ventas.ToString("C2")</td></tr>
-                                <tr><td>(-) Descuentos diario:</td><td class="text-end text-danger">(@ultimo.Descuentos.ToString("C2"))</td></tr>
-                                <tr class="fw-bold"><td>Ventas Netas diarias:</td><td class="text-end">@ultimo.VentasNetas.ToString("C2")</td></tr>
-                                <tr><td>(-) Costo de Ventas diario:</td><td class="text-end text-danger">(@ultimo.CostoVentas.ToString("C2"))</td></tr>
-                                <tr class="fw-bold table-primary"><td>Ingresos Brutos diarios:</td><td class="text-end">@ultimo.IngresosNetos.ToString("C2")</td></tr>
-                            </table>
-                        </div>
-                        <div class="col-md-6">
-                            <h6 class="fw-bold">GASTOS Y RESULTADO</h6>
-                            <table class="table table-sm">
-                                <tr><td>Gastos Empleados diarios:</td><td class="text-end text-danger">(@ultimo.EmpleadoTotal.ToString("C2"))</td></tr>
-                                <tr><td>Gastos Menores diarios :</td><td class="text-end text-danger">(@ultimo.GastosMenoresTotal.ToString("C2"))</td></tr>
-                                <tr><td>Gastos ADM diarios :</td><td class="text-end text-danger">(@ultimo.GastoADMTotal.ToString("C2"))</td></tr>
-                                <tr><td>Gastos Financiamiento Diarios :</td><td class="text-end text-danger">(@ultimo.FinanciamientoTotal.ToString("C2"))</td></tr>
-                                <tr><td>Total Gastos diarios:</td><td class="text-end text-danger">(@ultimo.TotalGastos.ToString("C2"))</td></tr>
-                                <tr class="fw-bold @(ultimo.IngresosBrutos > 0 ? "table-success" : "table-danger")">
-                                    <td>Ingresos Neto diario:</td>
-                                    <td class="text-end">@ultimo.IngresosBrutos.ToString("C2")</td>
-                                </tr>
-                                <tr><td>Punto de Equilibrio diario:</td><td class="text-end">@ultimo.PuntoEquilibrio.ToString("C2")</td></tr>
-                                <tr><td>Margen de Beneficio diario:</td><td class="text-end">@ultimo.MargenBeneficio.ToString("N2")%</td></tr>
-                            </table>
-                        </div>
-                    </div>
-
-                    <div class="mt-3">
-                        <h6>Historial (Últimos 10 días)</h6>
-                        <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
-                            <table class="table table-sm table-striped">
-                                <thead class="sticky-top bg-white">
-                                    <tr>
-                                        <th>Día</th>
-                                        <th>Ventas</th>
-                                        <th>Descuentos</th>
-                                        <th>Costo Ventas</th>
-                                        <th>Ingresos Netos</th>
-                                        <th>Gastos</th>
-                                        <th>Ingresos Brutos</th>
-                                        <th>Estado</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var res in resultadosDiarios.TakeLast(10).Reverse())
-                                    {
-                                        <tr class="@(res.ConBeneficios ? "table-success" : "table-danger")">
-                                            <td>@res.Dia</td>
-                                            <td>@res.Ventas.ToString("C2")</td>
-                                            <td>@res.Descuentos.ToString("C2")</td>
-                                            <td>@res.CostoVentas.ToString("C2")</td>
-                                            <td>@res.IngresosNetos.ToString("C2")</td>
-                                            <td>@res.TotalGastos.ToString("C2")</td>
-                                            <td>@res.IngresosBrutos.ToString("C2")</td>
-                                            <td>@(res.ConBeneficios ? "✓ Beneficio" : "✗ Pérdida")</td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                }
-                else
-                {
-                    <p class="text-muted">Inicie la simulación para ver los resultados...</p>
-                }
-            </div>
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0">Estado de Resultados - Día @diaActual</h5>
         </div>
+        <div class="card-body">
+            @if (resultadosDiarios.Any())
+            {
+                var ultimo = resultadosDiarios.Last();
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="fw-bold">INGRESOS</h6>
+                        <table class="table table-sm">
+                            <tr><td>Ventas Brutas diarias:</td><td class="text-end">@ultimo.VentasBrutas.ToString("C2")</td></tr>
+                            <tr><td>(-) Descuentos diario:</td><td class="text-end text-danger">(@ultimo.Descuentos.ToString("C2"))</td></tr>
+                            <tr class="fw-bold"><td>Ventas Netas diarias:</td><td class="text-end">@ultimo.VentasNetas.ToString("C2")</td></tr>
+                            <tr><td>(-) Costo de Ventas diario:</td><td class="text-end text-danger">(@ultimo.CostoVentas.ToString("C2"))</td></tr>
+                            <tr class="fw-bold table-primary"><td>Ingresos Brutos diarios:</td><td class="text-end">@ultimo.IngresosBrutos.ToString("C2")</td></tr>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="fw-bold">GASTOS Y RESULTADO</h6>
+                        <table class="table table-sm">
+                            <tr><td>Gastos Empleados diarios:</td><td class="text-end text-danger">(@ultimo.EmpleadoTotal.ToString("C2"))</td></tr>
+                            <tr><td>Gastos Menores diarios :</td><td class="text-end text-danger">(@ultimo.GastosMenoresTotal.ToString("C2"))</td></tr>
+                            <tr><td>Gastos ADM diarios :</td><td class="text-end text-danger">(@ultimo.GastoADMTotal.ToString("C2"))</td></tr>
+                            <tr><td>Gastos Financiamiento Diarios :</td><td class="text-end text-danger">(@ultimo.FinanciamientoTotal.ToString("C2"))</td></tr>
+                            <tr><td>Total Gastos diarios:</td><td class="text-end text-danger">(@ultimo.TotalGastos.ToString("C2"))</td></tr>
+                            <tr class="fw-bold @(ultimo.IngresosNeto > 0 ? "table-success" : "table-danger")">
+                                <td>Ingresos Neto diario:</td>
+                                <td class="text-end">@ultimo.IngresosNeto.ToString("C2")</td>
+                            </tr>
+                            <tr><td>Margen de Beneficio diario:</td><td class="text-end">@ultimo.MargenBeneficio.ToString("N2")%</td></tr>
+                        </table>
+                    </div>
+                </div>
 
-}
+                <div class="mt-3">
+                    <h6>Historial (Últimos 10 días)</h6>
+                    <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
+                        <table class="table table-sm table-striped">
+                            <thead class="sticky-top bg-white">
+                                <tr>
+                                    <th>Día</th>
+                                    <th>Ventas</th>
+                                    <th>Descuentos</th>
+                                    <th>Costo Ventas</th>
+                                    <th>Ingresos Netos</th>
+                                    <th>Gastos</th>
+                                    <th>Ingresos Brutos</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var res in resultadosDiarios.TakeLast(10).Reverse())
+                                {
+                                    <tr class="@(res.ConBeneficios ? "table-success" : "table-danger")">
+                                        <td>@res.Dia</td>
+                                        <td>@res.VentasBrutas.ToString("C2")</td>
+                                        <td>@res.Descuentos.ToString("C2")</td>
+                                        <td>@res.CostoVentas.ToString("C2")</td>
+                                        <td>@res.IngresosNeto.ToString("C2")</td>
+                                        <td>@res.TotalGastos.ToString("C2")</td>
+                                        <td>@res.IngresosBrutos.ToString("C2")</td>
+                                        <td>@(res.ConBeneficios ? "✓ Beneficio" : "✗ Pérdida")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <p class="text-muted">Inicie la simulación para ver los resultados...</p>
+            }
+        </div>
+    </div>
 
-@if (mostrarEstadisticas && estadisticasFinales != null)
-{
+    @if (mostrarEstadisticas && estadisticasFinales != null)
+    {
         <div class="modal show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
-                    <div class="modal-header bg-primary text-white"> <h5 class="modal-title">📊 Estadísticas Finales de Simulación</h5> <button type="button" class="btn-close btn-close-white" @onclick="CerrarEstadisticas"></button> </div> <div class="modal-body">
+
+                    <!-- Encabezado -->
+                    <div class="modal-header bg-primary text-white">
+                        <h5 class="modal-title">📊 Estadísticas Finales de Simulación</h5>
+                        <button type="button" class="btn-close btn-close-white" @onclick="CerrarEstadisticas"></button>
+                    </div>
+
+                    <!-- Cuerpo -->
+                    <div class="modal-body">
+
                         @{
-                            var totales = CalcularTotales(); var totalVentas = resultadosDiarios.Sum(r => r.Ventas); var totalCostoVentas = resultadosDiarios.Sum(r => r.CostoVentas); var totalBeneficiosBrutos = totalVentas - totalCostoVentas; var totalGastosPersonal = resultadosDiarios.Sum(r => r.EmpleadoTotal); var totalGastosAdm = resultadosDiarios.Sum(r => r.GastoADMTotal); var totalGastosMenores = resultadosDiarios.Sum(r => r.GastosMenoresTotal); var totalFinanciamiento = resultadosDiarios.Sum(r => r.FinanciamientoTotal); var totalGastos = totales.GastoTotal; var beneficiosNetos = totales.BeneficioNeto; var porcentajeGastos = totalBeneficiosBrutos != 0 ? (totalGastos / totalBeneficiosBrutos) * 100f : 0f;
+                            // ----------------------------
+                            //  Cálculos principales
+                            // ----------------------------
+                            var totales = CalcularTotales();
+
+                            var totalVentasBrutas = resultadosDiarios.Sum(r => r.VentasBrutas);
+                            var totalDescuentos = resultadosDiarios.Sum(r => r.Descuentos);
+                            var totalVentasNetas = resultadosDiarios.Sum(r => r.VentasNetas);
+                            var totalCostoVentas = resultadosDiarios.Sum(r => r.CostoVentas);
+                            var totalBeneficiosBrutos = resultadosDiarios.Sum(r => r.IngresosBrutos);
+
+                            var totalGastosPersonal = resultadosDiarios.Sum(r => r.EmpleadoTotal);
+                            var totalGastosAdm = resultadosDiarios.Sum(r => r.GastoADMTotal);
+                            var totalGastosMenores = resultadosDiarios.Sum(r => r.GastosMenoresTotal);
+                            var totalFinanciamiento = resultadosDiarios.Sum(r => r.FinanciamientoTotal);
+
+                            var totalGastos = totales.GastoTotal;
+                            var beneficiosNetos = totales.BeneficioNeto;
+
+                            var porcentajeGastos = totalBeneficiosBrutos != 0
+                            ? (totalGastos / totalBeneficiosBrutos) * 100f
+                            : 0f;
                         }
-                        <!-- Tabla de Resumen Financiero --> <div class="row mb-4">
-                            <div class="col-md-6"> <table class="table table-bordered"> <tbody> <tr class="table-light"> <td><strong>+ Ventas</strong></td> <td class="text-end"><strong>@totalVentas.ToString("N2")</strong></td> </tr> <tr> <td class="ps-4">- Costos de Ventas</td> <td class="text-end">@totalCostoVentas.ToString("N2")</td> </tr> <tr class="table-light"> <td><strong>= Beneficios Brutos</strong></td> <td class="text-end"><strong>@totalBeneficiosBrutos.ToString("N2")</strong></td> </tr> <tr class="table-secondary"> <td><strong>- Gastos</strong></td> <td></td> </tr> <tr> <td class="ps-4">- Gastos de Personal</td> <td class="text-end">@totalGastosPersonal.ToString("N2")</td> </tr> <tr> <td class="ps-4">- Gastos Administrativos</td> <td class="text-end">@totalGastosAdm.ToString("N2")</td> </tr> <tr> <td class="ps-4">- Gastos Menores</td> <td class="text-end">@totalGastosMenores.ToString("N2")</td> </tr> <tr> <td class="ps-4">- Financiamiento</td> <td class="text-end">@totalFinanciamiento.ToString("N2")</td> </tr> <tr class="table-warning"> <td><strong>Total Gastos</strong></td> <td class="text-end"><strong>@totalGastos.ToString("N2")</strong></td> </tr> <tr class="@(beneficiosNetos >= 0 ? "table-success" : "table-danger")"> <td><strong>= Beneficios Netos</strong></td> <td class="text-end"><strong>@beneficiosNetos.ToString("N2")</strong></td> </tr> <tr> <td><strong>Porcentaje de Gastos / Beneficios Brutos</strong></td> <td class="text-end"><strong class="@(porcentajeGastos > 100 ? "text-danger" : "text-success")">@porcentajeGastos.ToString("N0")%</strong></td> </tr> </tbody> </table> </div> <div class="col-md-6">
-                                <!-- Gráfico de barras comparativo --> <div class="card">
+
+                        <!-- ============================
+                             TABLA DE RESUMEN FINANCIERO
+                        ============================ -->
+                        <div class="row mb-4">
+
+                            <div class="col-md-6">
+                                <table class="table table-bordered">
+                                    <tbody>
+
+                                        <tr class="table-light">
+                                            <td><strong>+ Ventas Brutas</strong></td>
+                                            <td class="text-end"><strong>@totalVentasBrutas.ToString("N2")</strong></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="ps-4">- Descuentos</td>
+                                            <td class="text-end">@totalDescuentos.ToString("N2")</td>
+                                        </tr>
+
+                                        <tr class="table-light">
+                                            <td><strong>= Ventas Netas</strong></td>
+                                            <td class="text-end"><strong>@totalVentasNetas.ToString("N2")</strong></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="ps-4">- Costos de Ventas</td>
+                                            <td class="text-end">@totalCostoVentas.ToString("N2")</td>
+                                        </tr>
+
+                                        <tr class="table-light">
+                                            <td><strong>= Beneficios Brutos</strong></td>
+                                            <td class="text-end"><strong>@totalBeneficiosBrutos.ToString("N2")</strong></td>
+                                        </tr>
+
+                                        <tr class="table-secondary">
+                                            <td><strong>- Gastos</strong></td>
+                                            <td></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="ps-4">- Gastos de Personal</td>
+                                            <td class="text-end">@totalGastosPersonal.ToString("N2")</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="ps-4">- Gastos Administrativos</td>
+                                            <td class="text-end">@totalGastosAdm.ToString("N2")</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="ps-4">- Gastos Menores</td>
+                                            <td class="text-end">@totalGastosMenores.ToString("N2")</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="ps-4">- Financiamiento</td>
+                                            <td class="text-end">@totalFinanciamiento.ToString("N2")</td>
+                                        </tr>
+
+                                        <tr class="table-warning">
+                                            <td><strong>Total Gastos</strong></td>
+                                            <td class="text-end"><strong>@totalGastos.ToString("N2")</strong></td>
+                                        </tr>
+
+                                        <tr class="@(beneficiosNetos >= 0 ? "table-success" : "table-danger")">
+                                            <td><strong>= Beneficios Netos</strong></td>
+                                            <td class="text-end"><strong>@beneficiosNetos.ToString("N2")</strong></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td><strong>Porcentaje Gastos / Beneficios</strong></td>
+                                            <td class="text-end">
+                                                <strong class="@(porcentajeGastos > 100 ? "text-danger" : "text-success")">
+                                                    @porcentajeGastos.ToString("N0")%
+                                                </strong>
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- ============================
+                                 GRÁFICO BARRAS
+                            ============================ -->
+                            <div class="col-md-6">
+                                <div class="card">
                                     <div class="card-body">
-                                        <h6 class="text-center mb-3">Comparación Ventas vs Costos</h6> <svg width="100%" height="250" viewBox="0 0 400 250">
+
+                                        <h6 class="text-center mb-3">Comparación Ventas vs Costos</h6>
+
+                                        <svg width="100%" height="250" viewBox="0 0 400 250">
+
                                             @{
-                                                var maxValor = Math.Max(totalVentas, totalCostoVentas); var alturaVentas = (totalVentas / maxValor) * 180; var alturaCostos = (totalCostoVentas / maxValor) * 180;
+                                                var maxValor = Math.Max(totalVentasNetas, totalCostoVentas);
+                                                var alturaVentas = (totalVentasNetas / maxValor) * 180;
+                                                var alturaCostos = (totalCostoVentas / maxValor) * 180;
                                             }
+
                                             <!-- Barras -->
                                             <rect x="80" y="@(200 - alturaVentas)" width="80" height="@alturaVentas" fill="#5190d5" />
-                                            <rect x="240" y="@(200 - alturaCostos)" width="80" height="@alturaCostos" fill="#f39c6b" /> <!-- Etiquetas -->
-                                            <text x="120" y="@(190 - alturaVentas)" text-anchor="middle" font-size="12" fill="#333" font-weight="bold"> @((totalVentas / 1000).ToString("N0"))K </text>
-                                            <text x="280" y="@(190 - alturaCostos)" text-anchor="middle" font-size="12" fill="#333" font-weight="bold"> @((totalCostoVentas / 1000).ToString("N0"))K </text> <!-- Línea base -->
-                                            <line x1="50" y1="200" x2="350" y2="200" stroke="#333" stroke-width="2" /> <!-- Leyendas -->
-                                            <text x="120" y="225" text-anchor="middle" font-size="14" fill="#333">+ Ventas</text>
-                                            <text x="280" y="225" text-anchor="middle" font-size="14" fill="#333">- Costos de Ventas</text>
+                                            <rect x="240" y="@(200 - alturaCostos)" width="80" height="@alturaCostos" fill="#f39c6b" />
+
+                                            <!-- Etiquetas -->
+                                            <text x="120" y="@(190 - alturaVentas)" text-anchor="middle" font-size="12" fill="#333" font-weight="bold">
+                                                @((totalVentasNetas / 1000).ToString("N0"))K
+                                            </text>
+                                            <text x="280" y="@(190 - alturaCostos)" text-anchor="middle" font-size="12" fill="#333" font-weight="bold">
+                                                @((totalCostoVentas / 1000).ToString("N0"))K
+                                            </text>
+
+                                            <line x1="50" y1="200" x2="350" y2="200" stroke="#333" stroke-width="2" />
+
+                                            <text x="120" y="225" text-anchor="middle" font-size="14">Ventas Netas</text>
+                                            <text x="280" y="225" text-anchor="middle" font-size="14">Costos</text>
+
                                         </svg>
                                     </div>
                                 </div>
                             </div>
-                        </div> <!-- Gráficos adicionales --> <div class="row">
+
+                        </div>
+
+                        <!-- ============================
+                             GRÁFICO PIE CORREGIDO
+                        ============================ -->
+                        <div class="row">
                             <div class="col-md-12">
                                 <div class="card">
                                     <div class="card-body">
-                                        <h6 class="text-center mb-3">Distribución de los Gastos</h6> <div class="d-flex justify-content-center">
+
+                                        <h6 class="text-center mb-3">Distribución de los Gastos</h6>
+
+                                        <div class="d-flex justify-content-center">
+
                                             <svg width="400" height="400" viewBox="0 0 400 400">
                                                 @{
-                                                    var cx = 200f; var cy = 200f; var radio = 120f; var porcentajePersonal = totalGastos != 0 ? (totalGastosPersonal / totalGastos) * 100 : 0; var porcentajeAdm = totalGastos != 0 ? (totalGastosAdm / totalGastos) * 100 : 0; var porcentajeMenores = totalGastos != 0 ? (totalGastosMenores / totalGastos) * 100 : 0; var porcentajeFinan = totalGastos != 0 ? (totalFinanciamiento / totalGastos) * 100 : 0; var angulo1 = 0f; var angulo2 = angulo1 + (float)(porcentajePersonal * 3.6); var angulo3 = angulo2 + (float)(porcentajeAdm * 3.6); var angulo4 = angulo3 + (float)(porcentajeMenores * 3.6); string CrearArco(float inicio, float fin, float r) { var x1 = cx + r * Math.Cos(inicio * Math.PI / 180); var y1 = cy + r * Math.Sin(inicio * Math.PI / 180); var x2 = cx + r * Math.Cos(fin * Math.PI / 180); var y2 = cy + r * Math.Sin(fin * Math.PI / 180); var largeArc = (fin - inicio) > 180 ? 1 : 0; return $"M {cx} {cy} L {x1} {y1} A {r} {r} 0 {largeArc} 1 {x2} {y2} Z"; }
-                                                }
-                                                <!-- Segmentos del pie -->
-                                                <path d="@CrearArco(angulo1, angulo2, radio)" fill="#5190d5" stroke="white" stroke-width="2" />
-                                                <path d="@CrearArco(angulo2, angulo3, radio)" fill="#f39c6b" stroke="white" stroke-width="2" />
-                                                <path d="@CrearArco(angulo3, angulo4, radio)" fill="#a0a0a0" stroke="white" stroke-width="2" />
-                                                <path d="@CrearArco(angulo4, 360, radio)" fill="#ffc107" stroke="white" stroke-width="2" /> <!-- Porcentajes en los segmentos --> @{
-                                                void DibujarPorcentaje(float anguloInicio, float anguloFin, string porcentaje)
-                                                {
-                                                    var anguloMedio = (anguloInicio + anguloFin) / 2; var rx = cx + (radio * 0.7f) * (float)Math.Cos(anguloMedio * Math.PI / 180); var ry = cy + (radio * 0.7f) * (float)Math.Sin(anguloMedio * Math.PI / 180);
-                                                    <svg x="@(rx - 28)" y="@(ry - 12)" width="56" height="24" viewBox="0 0 56 24" xmlns="http://www.w3.org/2000/svg" style="overflow:visible;">
-                                                        <rect x="0" y="0" width="56" height="24" rx="4" ry="4" fill="rgba(0,0,0,0.25)" />
-                                                        <text x="28" y="16" text-anchor="middle" dominant-baseline="middle" font-size="12" fill="white" font-weight="700">
-                                                            @porcentaje
-                                                        </text>
-                                                    </svg>
-                                                }
-                                                DibujarPorcentaje(angulo1, angulo2, $"{porcentajePersonal:N0}%"); DibujarPorcentaje(angulo2, angulo3, $"{porcentajeAdm:N0}%"); DibujarPorcentaje(angulo3, angulo4, $"{porcentajeMenores:N0}%"); DibujarPorcentaje(angulo4, 360, $"{porcentajeFinan:N0}%");
+                                                    float cx = 200f, cy = 200f, radio = 120f;
 
-                                            }
-                                        </svg>
-                                    </div> <!-- Leyenda --> <div class="d-flex justify-content-center gap-4 mt-3"> <div><span style="display:inline-block; width:20px; height:20px; background:#5190d5; border-radius:3px;"></span> <small>Gastos de Personal</small></div> <div><span style="display:inline-block; width:20px; height:20px; background:#f39c6b; border-radius:3px;"></span> <small>Gastos Administrativos</small></div> <div><span style="display:inline-block; width:20px; height:20px; background:#a0a0a0; border-radius:3px;"></span> <small>Gastos Menores</small></div> <div><span style="display:inline-block; width:20px; height:20px; background:#ffc107; border-radius:3px;"></span> <small>Financiamiento</small></div> </div>
+                                                    float porcentajePersonal = totalGastos != 0 ? (totalGastosPersonal / totalGastos) * 100f : 0f;
+                                                    float porcentajeAdm = totalGastos != 0 ? (totalGastosAdm / totalGastos) * 100f : 0f;
+                                                    float porcentajeMenores = totalGastos != 0 ? (totalGastosMenores / totalGastos) * 100f : 0f;
+                                                    float porcentajeFinan = totalGastos != 0 ? (totalFinanciamiento / totalGastos) * 100f : 0f;
+
+                                                    float a1 = 0f;
+                                                    float a2 = a1 + porcentajePersonal * 3.6f;
+                                                    float a3 = a2 + porcentajeAdm * 3.6f;
+                                                    float a4 = a3 + porcentajeMenores * 3.6f;
+
+                                                    string Arc(float ini, float fin)
+                                                    {
+                                                        var x1 = cx + radio * Math.Cos(ini * Math.PI / 180);
+                                                        var y1 = cy + radio * Math.Sin(ini * Math.PI / 180);
+                                                        var x2 = cx + radio * Math.Cos(fin * Math.PI / 180);
+                                                        var y2 = cy + radio * Math.Sin(fin * Math.PI / 180);
+                                                        int large = (fin - ini) > 180 ? 1 : 0;
+
+                                                        return $"M {cx} {cy} L {x1} {y1} A {radio} {radio} 0 {large} 1 {x2} {y2} Z";
+                                                    }
+
+                                                    void DibujarPorcentaje(float ini, float fin, string txt)
+                                                    {
+                                                        float mid = (ini + fin) / 2;
+                                                        float rx = cx + (radio * 0.7f) * (float)Math.Cos(mid * Math.PI / 180);
+                                                        float ry = cy + (radio * 0.7f) * (float)Math.Sin(mid * Math.PI / 180);
+
+                                                        <g>
+                                                            <rect x="@(rx - 28)" y="@(ry - 12)" width="56" height="24" rx="4" fill="rgba(0,0,0,0.6)" />
+                                                            <text x="@rx" y="@(ry + 4)" text-anchor="middle" font-size="12" fill="white" font-weight="700">@txt</text>
+                                                        </g>
+                                                        ;
+                                                    }
+                                                }
+
+                                                <!-- Segmentos -->
+                                                <path d="@Arc(a1, a2)" fill="#5190d5" stroke="white" stroke-width="2" />
+                                                <path d="@Arc(a2, a3)" fill="#f39c6b" stroke="white" stroke-width="2" />
+                                                <path d="@Arc(a3, a4)" fill="#a0a0a0" stroke="white" stroke-width="2" />
+                                                <path d="@Arc(a4, 360)" fill="#ffc107" stroke="white" stroke-width="2" />
+
+                                                <!-- Porcentajes -->
+                                                @{
+                                                    DibujarPorcentaje(a1, a2, $"{porcentajePersonal:N0}%");
+                                                    DibujarPorcentaje(a2, a3, $"{porcentajeAdm:N0}%");
+                                                    DibujarPorcentaje(a3, a4, $"{porcentajeMenores:N0}%");
+                                                    DibujarPorcentaje(a4, 360, $"{porcentajeFinan:N0}%");
+                                                }
+                                            </svg>
+                                        </div>
+
+                                        <!-- Leyenda -->
+                                        <div class="d-flex justify-content-center gap-4 mt-3">
+                                            <div><span style="display:inline-block;width:20px;height:20px;background:#5190d5;border-radius:3px;"></span> <small>Gastos de Personal</small></div>
+                                            <div><span style="display:inline-block;width:20px;height:20px;background:#f39c6b;border-radius:3px;"></span> <small>Gastos Administrativos</small></div>
+                                            <div><span style="display:inline-block;width:20px;height:20px;background:#a0a0a0;border-radius:3px;"></span> <small>Gastos Menores</small></div>
+                                            <div><span style="display:inline-block;width:20px;height:20px;background:#ffc107;border-radius:3px;"></span> <small>Financiamiento</small></div>
+                                        </div>
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
+
+
                     </div>
-                </div> <div class="modal-footer"> <button type="button" class="btn btn-primary" @onclick="CerrarEstadisticas">Cerrar</button> </div>
+
+                    <!-- Footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" @onclick="CerrarEstadisticas">Cerrar</button>
+                    </div>
+
+                </div>
             </div>
         </div>
-    </div>
     }
+
+}
 
 @code {
     private bool simulacionActiva = false;
@@ -677,40 +853,28 @@ else if (tabActiva == "estadoresultado")
         }
 
         float descuentos = ventasBrutas * (tasaDescuento / 100);
-        float gastoEmpleados = empleados.Sum(x => x.Salario) / 30f;
-        float gastoFinanciamiento = financiamientos.Sum(x => x.CuotaMensual) / 30f;
-        float gastoADM = gastosAdm.Sum(x => x.Valor) / 30f;
-        float gastoMenor = gastosMenores.Sum(x => x.Valor) / 30f;
 
-        float totalGastos = gastoEmpleados + gastoFinanciamiento + gastoADM + gastoMenor;
 
         float ventasNetas = ventasBrutas - descuentos;
-        float ingresosNetos = ventasNetas - costoVentas;
-        float ingresosBrutos = ingresosNetos - totalGastos;
+        float ingresosBrutos = ventasNetas - costoVentas;
 
         float margenBeneficio = ventasBrutas != 0 ? (ingresosBrutos / ventasBrutas) * 100f : 0f;
 
         var resultado = new ResultadoDiario
         {
             Dia = diaActual,
-            Ventas = ventasBrutas,
+            VentasBrutas = ventasBrutas,
             Descuentos = descuentos,
             CostoVentas = costoVentas,
-            VentasNetas = ventasNetas,
-            IngresosNetos = ingresosNetos,
-            EmpleadoTotal = gastoEmpleados,
-            FinanciamientoTotal = gastoFinanciamiento,
-            GastoADMTotal = gastoADM,
-            GastosMenoresTotal = gastoMenor,
-            TotalGastos = totalGastos,
-            IngresosBrutos = ingresosBrutos,
+            EmpleadoTotal = empleadoServices.gastosDiarios(empleados),
+            FinanciamientoTotal = financiamientoServices.gastosDiarios(financiamientos),
+            GastoADMTotal = gastoAdministrativoServices.gastosDiarios(gastosAdm),
+            GastosMenoresTotal = gastoMenorServices.gastosDiarios(gastosMenores),
             MargenBeneficio = margenBeneficio,
         };
 
         resultadosDiarios.Add(resultado);
 
-        // Opcional: limitar histórico para memoria
-        if (resultadosDiarios.Count > 365) resultadosDiarios.RemoveAt(0);
     }
 
 
@@ -781,17 +945,17 @@ else if (tabActiva == "estadoresultado")
         var p = productos.FirstOrDefault(x => x.Id == id);
         if (p != null) productos.Remove(p);
     }
-
-    // ---------- Cálculos de Dashboard ----------
     private TotalesDashboard CalcularTotales()
     {
-        var totales = new TotalesDashboard();
-        totales.GastoTotal = resultadosDiarios.Sum(r => r.TotalGastos);
-        totales.BeneficioNeto = resultadosDiarios.Sum(r => r.IngresosBrutos);
         var ingresosBrutos = resultadosDiarios.Sum(r => r.IngresosBrutos);
-        var gastos = resultadosDiarios.Sum(r => r.TotalGastos);
-        totales.PorcentajeGastos = ingresosBrutos != 0 ? (gastos / Math.Abs(ingresosBrutos)) * 100f : 0f;
-        return totales;
+        var gastosTotales = resultadosDiarios.Sum(r => r.TotalGastos); 
+        var beneficioNeto = ingresosBrutos - gastosTotales;
+        return new TotalesDashboard
+        {
+            GastoTotal = gastosTotales,
+            BeneficioNeto = beneficioNeto,
+            PorcentajeGastos = ingresosBrutos != 0 ? 1 - (gastosTotales / ingresosBrutos) * 100f : 0f
+        };
     }
 
     private void CalcularEstadisticasFinales()
@@ -807,16 +971,11 @@ else if (tabActiva == "estadoresultado")
         estadisticasFinales.DiasConPerdidas = resultadosDiarios.Count - estadisticasFinales.DiasConBeneficios;
         estadisticasFinales.PromedioPorcentajeBeneficios = resultadosDiarios.Average(r => r.MargenBeneficio);
         estadisticasFinales.PorcentajeFinalSugerido = Math.Max(0f, (float)estadisticasFinales.PromedioPorcentajeBeneficios);
-        estadisticasFinales.PuntoEquilibrioPromedio = resultadosDiarios.Average(r => r.PuntoEquilibrio);
     }
 
     private void CerrarEstadisticas()
     {
         mostrarEstadisticas = false;
     }
-
-
-
-
 
 }

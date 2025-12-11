@@ -14,4 +14,10 @@ public class GastoAdministrativoServices
              new GastoAdministrativo { Id = 2, Descripcion = "Publicidad Digital", Valor = 5000 }
          };
     }
+
+    public float gastosDiarios(List<GastoAdministrativo> gastoAdministrativo)
+    {
+        float gastoAdministrativos = gastoAdministrativo.Sum(x => x.Valor) / 30f;
+        return gastoAdministrativos;
+    }
 }

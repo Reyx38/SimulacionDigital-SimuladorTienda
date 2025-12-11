@@ -17,4 +17,10 @@ public class EmpleadoServices
         };
     }
 
+    public float gastosDiarios(List<Empleado> empleados)
+    {
+        float gastoEmpleados = empleados.Sum(x => x.Salario) / 30f;
+        return gastoEmpleados;
+    }
+
 }

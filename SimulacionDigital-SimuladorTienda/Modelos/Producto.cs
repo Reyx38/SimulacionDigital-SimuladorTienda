@@ -5,7 +5,6 @@ public class Producto
     public string Nombre { get; set; } = "";
     public int Cantidad { get; set; }
     public float SubTotal { get; set; }
-
     public float ProbabilidadVenta { get; set; }
     public float MargenBeneficio { get; set; }
     public float PrecioUnitario => SubTotal / Cantidad;

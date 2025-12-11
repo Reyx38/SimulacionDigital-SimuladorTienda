@@ -15,4 +15,9 @@ public class GastosMenorServices
             new GastoMenor { Id = 2, Descripcion = "Motoconcho", Valor = 3000 }
         };
     }
+    public float gastosDiarios(List<GastoMenor> gastoMenor)
+    {
+        float gastosMenor = gastoMenor.Sum(x => x.Valor) / 30f;
+        return gastosMenor;
+    }
 }
